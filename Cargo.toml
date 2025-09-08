@@ -1,0 +1,17 @@
+[package]
+name = "juego_mejorado"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rand = "0.9.2"
+macroquad = "0.4"
+
+[[bin]]
+name = "simulador"
+path = "src/main.rs"
+
+[[bin]]
+name = "ecosistema_grafico"
+path = "src/macroquad_main.rs"
+
