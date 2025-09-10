@@ -17,12 +17,12 @@ pub trait Organismo {
     fn edad(&self) -> u32;
 
 
-
+    //Convertir referencia aun trait
     fn as_any(&self) -> &dyn Any;
     fn as_any_mut(&mut self) -> &mut dyn Any;
 }
 
-
+//Para verificar tipo de organismo
 impl dyn Organismo {
     pub fn is<T: 'static>(&self) -> bool {
         self.as_any().is::<T>()

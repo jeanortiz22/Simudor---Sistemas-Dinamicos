@@ -1,4 +1,3 @@
-// src/macroquad_main.rs
 mod organismo;
 mod simulador;
 mod cabra;
@@ -7,44 +6,35 @@ mod lobo;
 mod modelo;
 
 use macroquad::prelude::*;
-use ::rand::Rng;          // 👈 usa el trait desde el rand del Cargo.toml
-use ::rand::rngs::ThreadRng; // 👈 para thread_rng
+use ::rand::Rng;      
+use ::rand::rngs::ThreadRng;
 
- // usar rand del Cargo.toml
 use simulador::Simulador;
 use cabra::Cabra;
 use conejo::Conejo;
 use lobo::Lobo;
 
 // Función para poblar la simulación con organismos iniciales
-// Función para poblar la simulación (espera ThreadRng explícito)
-// Función para poblar la simulación
+// Función para poblar la simulación 
 fn poblar(sim: &mut Simulador, rng: &mut ThreadRng) {
-    for _ in 0..100 {
+    for _ in 0..150{
         sim.agregar(Box::new(Cabra::new_random(rng)));
     }
-    for _ in 0..100 {
+    for _ in 0..40 {
         sim.agregar(Box::new(Conejo::new_random(rng)));
     }
     sim.agregar(Box::new(Lobo::new()));
 }
 
-
-
-
 #[macroquad::main("Ecosistema - Barras")]
 async fn main() {
-    // -----------------------------------------------------------------
     // Configuración inicial
-    // -----------------------------------------------------------------
     let mut sim = Simulador::new();
     let mut rng = ::rand::thread_rng();
 
     poblar(&mut sim, &mut rng);
 
-    // -----------------------------------------------------------------
     // Estados de la UI / animación
-    // -----------------------------------------------------------------
     let mut dia: u32 = 0;
     let mut timer = 0.0_f32;
     let intervalo_dia = 0.6_f32; // segundos por día
@@ -88,7 +78,7 @@ async fn main() {
         let num_conejos: f32 = sim.contar::<Conejo>() as f32;
         let num_lobos: f32 = sim.contar::<Lobo>() as f32;
 
-        // máximo para escalar
+        // maximo para escalar
         let max_poblacion = num_cabras.max(num_conejos).max(num_lobos).max(1.0);
 
         // dimensiones
@@ -117,9 +107,7 @@ async fn main() {
         display_conejos += (target_conejos - display_conejos) * (1.0 - (-anim_speed * dt).exp());
         display_lobos += (target_lobos - display_lobos) * (1.0 - (-anim_speed * dt).exp());
 
-        // -----------------------------------------------------------------
         // Dibujo
-        // -----------------------------------------------------------------
         clear_background(WHITE);
 
         draw_text(
@@ -149,10 +137,6 @@ async fn main() {
         draw_text(&format!("Total población: {}", sim.poblacion.len()), 24.0, screen_h - 20.0, 20.0, DARKBLUE);
         draw_text("Space: Pausa/Reanuda    R: Reiniciar", screen_w - 420.0, screen_h - 20.0, 18.0, DARKGRAY);
 
-        
-
-
-
         // Buscar lobo y mostrar alimento
         if let Some(lobo) = sim.poblacion.iter().find_map(|o| o.as_any().downcast_ref::<Lobo>()) {
             draw_text(
@@ -164,7 +148,6 @@ async fn main() {
             );
         }
 
-
         let mut y_eventos = 150.0;
 
         // Dibujar eventos de caza del lobo
@@ -173,11 +156,7 @@ async fn main() {
             y_eventos += 24.0; // espacio entre líneas
         }
 
-
         next_frame().await;
-
     }
 
-
-    
 }

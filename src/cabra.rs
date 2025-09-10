@@ -11,6 +11,7 @@ pub struct Cabra {
 }
 
 impl Cabra {
+    // Crear una nueva cabra con sexo aleatorio.
     pub fn new_random(rng: &mut rand::rngs::ThreadRng) -> Self {
         let sexo = if rng.gen_bool(0.5) { Sexo::Macho } else { Sexo::Hembra };
         Cabra { edad: 0, peso: 0.0, sexo, viva: true }
@@ -21,6 +22,7 @@ impl Cabra {
     }
 }
 
+//Implementacion del trait
 impl Organismo for Cabra {
     fn envejecer(&mut self) {
         if !self.viva { return; }
@@ -28,7 +30,7 @@ impl Organismo for Cabra {
         self.peso = gompertz(self.edad as f64, 60.0, 0.01, 150.0);
 
         // Muerte por vejez
-        if self.edad >= 365 * 1 {
+        if self.edad >= 365* 12{
             self.viva = false;
             return;
         }
@@ -46,14 +48,14 @@ impl Organismo for Cabra {
         let mut crias: Vec<Box<dyn Organismo>> = Vec::new();
         if !self.viva { return crias; }
 
-        if self.edad > 365 && self.sexo == Sexo::Hembra && rng.gen_bool(0.01) {
+        if self.edad > 200 && self.sexo == Sexo::Hembra && rng.gen_bool(0.01) {
             let cantidad = rng.gen_range(1..=2);
             for _ in 0..cantidad {
                 crias.push(Box::new(Cabra::new_random(rng))); //Ingreso a la box o vec en el head 
             }
         }
 
-        crias //LO retorno 
+        crias //Lo retorno 
     }
 
     fn peso(&self) -> f64 { self.peso }

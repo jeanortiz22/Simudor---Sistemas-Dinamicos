@@ -10,13 +10,14 @@ use cabra::Cabra;
 use conejo::Conejo;
 use lobo::Lobo;
 
+//Version para visualizar solo en consola
 fn main() {
     let mut sim = Simulador::new();
     let mut rng = rand::thread_rng();
 
     // Población inicial configurable
     let num_cabras_iniciales = 100;
-    let num_conejos_iniciales = 100;
+    let num_conejos_iniciales = 10;
     let num_lobos_iniciales = 1; // 🔹 ahora varios lobos iniciales
 
     // Cabras iniciales
